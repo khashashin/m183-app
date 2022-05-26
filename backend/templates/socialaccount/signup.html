@@ -16,7 +16,16 @@ Signup
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
-  <button type="submit">Sign Up</button>
+  <button type="submit" class="btn btn-primary">Sign Up</button>
 </form>
 
+{% endblock %}
+
+{% block javascripts %}
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function(event) {
+    const emailInputField = document.getElementById('id_email');
+    emailInputField.classList.add('form-control');
+  });
+</script>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends "account/full_screen_wrapper.html" %}
+{% load static socialaccount %}
 
 {% block content_wrapper %}
 <h1>Sign Up</h1>
@@ -9,10 +10,40 @@
     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
     {% endif %}
     {{ form.as_p }}
-    <div class="d-flex align-items-center">
-        <button type="submit" id="submit" class="btn btn-primary w-50">Sign Up</button>
+    <div class="d-grid">
+        <button type="submit" id="submit" class="btn btn-primary">Sign Up</button>
     </div>
 </form>
 
-<p>Already have an account? Then please <a href="{{ login_url }}">Sign in</a>.</p>
+
+<div class="text-center">
+    <p>Already have an account? Then please <a href="{{ login_url }}">sign in</a>.</p>
+    {% get_providers as socialaccount_providers %}
+
+    {% if socialaccount_providers %}
+        <p>or sign up with:</p>
+
+
+        {% for provider in socialaccount_providers %}
+            {% if provider.name == 'GitHub' %}
+                <a title="{{provider.name}}" class="btn btn-outline-primary mx-1 {{provider.id}}"
+                    href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+                    <i class="bi bi-github"></i>
+                </a>
+            {% elif provider.name == 'GitLab' %}
+                <a title="IET-Gibb {{provider.name}}" class="provider-icon btn btn-outline-primary {{provider.id}}"
+                    href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+                    <img width="30"
+                        src="{% static 'img/gitlab-logo-500.png' %}" /></a>
+            {% elif provider.name == 'Google' %}
+                <a title="{{provider.name}}" class="btn btn-outline-danger mx-1 {{provider.id}}"
+                    href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"><i class="bi bi-google"></i></a>
+            {% elif provider.name == 'Twitter' %}
+                <a title="{{provider.name}}" class="btn btn-outline-primary mx-1 {{provider.id}}"
+                    href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"><i class="bi bi-twitter"></i></a>
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
+</div>
 {% endblock %}

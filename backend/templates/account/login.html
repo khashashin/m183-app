@@ -10,13 +10,13 @@
     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
     {% endif %}
     {{ form.as_p }}
-    <div class="d-flex align-items-center">
-        <button type="submit" id="submit" class="btn btn-primary w-50">Sign In</button>
+    <div class="d-grid">
+        <button type="submit" id="submit" class="btn btn-primary">Sign In</button>
     </div>
 </form>
 
 <div class="text-center">
-    <p>Not a member? <a href="{{ signup_url }}">Sign up</a></p>
+    <p>Not a member? <a href="{{ signup_url }}">sign up</a></p>
     {% get_providers as socialaccount_providers %}
 
     {% if socialaccount_providers %}
