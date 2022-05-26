@@ -16,7 +16,7 @@ source venv/bin/activate
 Install dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements_dev.txt
 ```
 ## Installation Frontend
 Install dependencies
