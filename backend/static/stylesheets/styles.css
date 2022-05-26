@@ -1,0 +1,38 @@
+html,
+body {
+    height: 100%;
+}
+
+main {
+    min-height: calc(100% - 60px);
+}
+
+main > .container {
+    padding: 60px 15px 0;
+}
+
+#rabbit {
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+    display: inline-block;
+}
+
+#logo {
+    text-decoration: none;
+    color: #fff;
+}
+
+.provider-icon {
+    padding: 0;
+    display: inline-block;
+    width: 42px;
+    height: 38px;
+    margin: 0;
+}
+
+.provider-icon img {
+    margin-bottom: -9px;
+}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block stylesheets %}
+<style>
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="container h-100 d-flex justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-md-12">
+
+                {% block content_wrapper %}
+                {% endblock %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

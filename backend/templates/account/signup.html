@@ -1,0 +1,18 @@
+{% extends "account/full_screen_wrapper.html" %}
+
+{% block content_wrapper %}
+<h1>Sign Up</h1>
+
+<form action="{% url 'account_signup' %}" method="post" class="mb-3">
+    {% csrf_token %}
+    {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+    {% endif %}
+    {{ form.as_p }}
+    <div class="d-flex align-items-center">
+        <button type="submit" id="submit" class="btn btn-primary w-50">Sign Up</button>
+    </div>
+</form>
+
+<p>Already have an account? Then please <a href="{{ login_url }}">Sign in</a>.</p>
+{% endblock %}
