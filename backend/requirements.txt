@@ -1,1 +1,4 @@
 django==4.0.4
+python-dotenv==0.20.0
+django-allauth==0.50.0
+django-pwned==1.1.1
