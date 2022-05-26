@@ -36,3 +36,21 @@ main > .container {
 .provider-icon img {
     margin-bottom: -9px;
 }
+
+.output-block {
+    min-width: 320px;
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: scroll;
+    background-color: black;
+    color: white;
+}
+
+.accordion-header small {
+    width: 100%;
+    display: block;
+    padding: 6px 20px;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: italic;
+}

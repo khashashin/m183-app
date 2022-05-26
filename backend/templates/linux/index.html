@@ -1,0 +1,74 @@
+{% extends 'linux/full_screen_wrapper.html' %}
+{% load static %}
+
+{% block content_wrapper %}
+
+<div class="input-block mb-3">
+    <form method="POST" id="run">
+        {% csrf_token %}
+        <label for="command">Command</label>
+        <textarea id="command" class="form-control mb-3"></textarea>
+        <div id="results" class="mb-3"></div>
+        <div class="d-grid">
+            <button type="submit" id="submit" class="btn btn-dark">Run</button>
+        </div>
+    </form>
+</div>
+<h4>Output</h4>
+<div class="output-block mb-3">
+
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#faqModal">
+    FAQ
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="faqModal" tabindex="-1" aria-labelledby="faqModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">FAQ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="accordion" id="linuxCommands">
+                    {% for command in allowed_commands %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="linux-command-{{forloop.counter}}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#command-options-{{forloop.counter}}" aria-expanded="true"
+                                    aria-controls="command-options-{{forloop.counter}}">
+                                {{command.name}}
+                            </button>
+                            <small>Description: {{command.description}}</small>
+                        </h2>
+                        <div id="command-options-{{forloop.counter}}" class="accordion-collapse collapse"
+                             aria-labelledby="linux-command-{{forloop.counter}}" data-bs-parent="#linuxCommands">
+                            <div class="accordion-body px-0">
+                                <h3 class="text-center">Available commant options</h3>
+                                {% for option in command.options %}
+                                <div class="alert alert-light" role="alert">
+                                    <h6 class="alert-heading">{{option.name}}</h6>
+                                    <i>{{option.description}}</i>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{%block javascripts%}
+<script src="{% static 'js/commander.js' %}"></script>
+{%endblock%}

@@ -1,3 +1,20 @@
 from django.contrib import admin
+from linux.models import Command, Option
 
-# Register your models here.
+
+class OptionInline(admin.TabularInline):
+    model = Option
+    extra = 0
+    fields = ('name', 'description')
+    readonly_fields = ('name', 'description')
+
+
+@admin.register(Command)
+class CommandAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+    search_fields = ('name', 'description')
+
+    # List available options inline
+    inlines = [
+        OptionInline,
+    ]
