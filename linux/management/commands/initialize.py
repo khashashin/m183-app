@@ -30,6 +30,8 @@ class Command(BaseCommand):
     help = "Initialize Site Name."
 
     def handle(self, *args, **options):
+        # Run Migration
+        call_command('migrate')
         # Create Site
         initialize_site(stdout=self.stdout, style=self.style)
         # Create Commands
