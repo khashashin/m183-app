@@ -54,6 +54,12 @@ GITLAB_CLIENT_ID=<your gitlab client id>
 GITLAB_CLIENT_SECRET=<your gitlab client secret>
 ```
 
+## Docker Compose
+```bash
+docker-compose up -d
+```
+Open your browser and go to http://127.0.0.1:8080
+
 ![image](https://user-images.githubusercontent.com/17837758/170585482-faace7ff-a043-401a-b1a3-8886dac9d514.png)
 
 ![image](https://user-images.githubusercontent.com/17837758/170585770-c051f771-ee73-48f5-8296-61b054ce959e.png)

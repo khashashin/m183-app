@@ -1,0 +1,4 @@
+.venv
+.git
+core/settings_local.py
+logs
