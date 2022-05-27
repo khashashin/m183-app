@@ -1,5 +1,7 @@
 # Starting Project Locally on your Computer
 
+If you prefer to use Docker then jump right to the [Docker](#docker-compose) section.
+
 ## Requirements
 python >= 3.9
 
