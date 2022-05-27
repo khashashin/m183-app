@@ -15,6 +15,8 @@ function main() {
 
         timeout = 7;
 
+        const errorElement = document.getElementById('results');
+        errorElement.innerHTML = '';
         const input = document.getElementById('command').value;
         const output = document.getElementById('output');
         output.innerHTML = '';
@@ -42,24 +44,9 @@ function main() {
                 let line = `<span class="line" style="color: red">${data.error}</span><br>`;
                 output.innerHTML = line;
             }
-            // for (let i = 0; i <= data.output.length; i++) {
-            //     (function (outputIndex) {
-            //         setTimeout(function () {
-            //             if (data.output.length > 0) {
-            //                 let line = `<span class="line" style="color: white">${data.output}</span><br>`;
-            //                 output.innerHTML += line;
-            //             }
-            //             if (data.error.length > 0) {
-            //                 let line = `<span class="line" style="color: red">${data.error}</span><br>`;
-            //                 output.innerHTML += line;
-            //             }
-            //         }, 200);
-            //     })(i);
-            // }
         }
         if (response.status >= 400) {
             const error = await response.json();
-            const errorElement = document.getElementById('results');
             errorElement.innerHTML = '<span class="line" style="color: red">' + error.error + '</span>';
         }
     });

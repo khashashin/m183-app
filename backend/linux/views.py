@@ -1,12 +1,16 @@
 import json
+import os
 import re
 import subprocess
 import html
 
+from datetime import datetime, timedelta
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.views import View
 from django.views.generic import TemplateView
+
+from core.settings_dev import BASE_DIR
 from linux.models import Command
 
 
@@ -46,6 +50,31 @@ class RunView(View):
 
     @staticmethod
     def post(request):
+        # Users can run commands only each 7 seconds
+        last_run = BASE_DIR / 'logs/last_run.json'
+        if not os.path.isfile(last_run):
+            with open(last_run, 'w') as f:
+                json.dump({'file_initiated': datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, f)
+
+        with open(last_run, 'r+') as f:
+            last_usage = json.load(f)
+            if request.user.username in last_usage:
+                command_by_user = last_usage[request.user.username]
+                command_dt = datetime.strptime(command_by_user, '%Y-%m-%d %H:%M:%S')
+                # If last command was made less than 7 seconds ago, skip
+                if (datetime.now() - command_dt) < timedelta(seconds=7):
+                    return JsonResponse(
+                        {'error': 'You can run commands only each 7 seconds'},
+                        status=400
+                    )
+                else:
+                    last_usage[request.user.username] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            else:
+                last_usage[request.user.username] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+            f.seek(0)
+            json.dump(last_usage, f)
+
         # Get command from body
         command = json.loads(request.body.decode("utf-8"))
         if not commant_is_valid(command['input']):
