@@ -1,9 +1,7 @@
 # Starting Project Locally on your Computer
-make sure you've python installed
 
 ## Requirements
-python >= 3.9  
-node >= 16.0.0
+python >= 3.9
 
 ## Installation Backend
 Create virtualenv and activate it
@@ -14,15 +12,46 @@ source venv/bin/activate
 ```
 
 Install dependencies
-
 ```bash
-pip install -r requirements_dev.txt
+pip install -e .
 ```
-## Installation Frontend
-Install dependencies
+or if you want to install all dependencies (including dev dependencies)
+```bash
+pip install -e '.[dev]'
+```
+
+## Prepare .env file
+```bash
+touch .env
+```
+
+## Make sure you add following environment variables to .env file
 
 ```bash
-npm install
+# To generate environment safe secret key, you can use:
+# python -c 'from django.utils.crypto import get_random_string; print(get_random_string(50, "abcdefghijklmnopqrstuvwxyz0123456789!%^*(-_)"))'
+SECRET_KEY=<your secret key>
+SITE_NAME=<your site name> # 127.0.0.1:8000
+ALLOWED_HOSTS=<your site name> # 127.0.0.1:8000 site.com site2.com
+DEBUG=True # Change to False if you want to run in production
+
+ADMIN_USERNAME=<your admin username> # admin
+ADMIN_EMAIL=<your admin email> # admin@mail.ch
+ADMIN_PASSWORD=<your admin password> # admin
+```
+
+## Initialize Database
+This will initialize admin user (using defaults if nothing is provided) and create database
+```bash
+python manage.py initialize
+```
+
+## If you want to be able to sign up using GitHub or GitLab, you need to add following settings to .env file
+```bash
+GITHUB_CLIENT_ID=<your github client id>
+GITHUB_CLIENT_SECRET=<your github client secret>
+GITLAB_CLIENT_ID=<your gitlab client id>
+GITLAB_CLIENT_SECRET=<your gitlab client secret>
 ```
 
 ![image](https://user-images.githubusercontent.com/17837758/170585482-faace7ff-a043-401a-b1a3-8886dac9d514.png)
