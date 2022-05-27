@@ -3,6 +3,7 @@ import os
 import re
 import subprocess
 import html
+import uuid
 
 from datetime import datetime, timedelta
 from django.http import JsonResponse
@@ -14,7 +15,7 @@ from core.settings_dev import BASE_DIR
 from linux.models import Command
 
 
-BLACK_LIST_CHARACTERS = [';', '&&', '||', '|', '>', '<', '$', '`', '{', '}', '~',  '=', '\n']
+BLACK_LIST_CHARACTERS = [';', '&&', '||', '|', '>', '<', '$', '`', '{', '}', '~',  '=', '\n', '\\', '\t', '\r']
 
 
 class IndexView(TemplateView):
@@ -77,7 +78,19 @@ class RunView(View):
 
         # Get command from body
         command = json.loads(request.body.decode("utf-8"))
-        if not commant_is_valid(command['input']):
+        # log used command by user in json file
+        date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        command_uuid = str(uuid.uuid4())
+        input_file = BASE_DIR / f'logs/{request.user.username}-input-commands.txt'
+        output_file = BASE_DIR / f'logs/{request.user.username}-output-commands.txt'
+        try:
+            with open(input_file, 'a') as f:
+                f.write(f'{date} {command_uuid} {command} \n')
+        except FileNotFoundError:
+            with open(input_file, 'w') as f:
+                f.write(f'{date} {command_uuid} {command} \n')
+
+        if not command_is_valid(command['input']):
             # Run command
             return JsonResponse(
                 {'error': 'Invalid command'},
@@ -100,6 +113,13 @@ class RunView(View):
         result.stdout = re.sub(r'\n', '<br>', result.stdout)
         result.stderr = re.sub(r'\n', '<br>', result.stderr)
 
+        try:
+            with open(output_file, 'a') as f:
+                f.write(f'{date} {command_uuid} STDOUT: {result.stdout} STDERR: {result.stderr} \n')
+        except FileNotFoundError:
+            with open(output_file, 'w') as f:
+                f.write(f'{date} {command_uuid} STDOUT: {result.stdout} STDERR: {result.stderr} \n')
+
         return JsonResponse(
             status=200,
             data={
@@ -109,14 +129,14 @@ class RunView(View):
         )
 
 
-def commant_is_valid(command):
-
-    command = get_command(command)
-    options = get_options(command)
+def command_is_valid(command):
 
     for character in BLACK_LIST_CHARACTERS:
         if character in command:
             return False
+
+    command = get_command(command)
+    options = get_options(command)
 
     # Check if command is valid
     is_valid_command = validate_command(command)
