@@ -7,7 +7,7 @@ from linux.models import Command as LinuxCommand, Option
 from .commands import COMMANDS
 
 SITE_NAME = os.environ.get("SITE_NAME", "example.com")
-DOMAIN_NAME = os.environ.get("DOMAIN_NAME", "127.0.0.1")
+DOMAIN_NAME = os.environ.get("DOMAIN_NAME", "example.com")
 
 
 class Command(BaseCommand):
@@ -23,8 +23,8 @@ class Command(BaseCommand):
 
 def initialize_site(stdout, style):
     site, created = Site.objects.get_or_create(
-            name=SITE_NAME,
-            domain=DOMAIN_NAME
+            name='example.com',
+            domain='example.com',
         )
     if created:
         stdout.write(
@@ -38,6 +38,10 @@ def initialize_site(stdout, style):
                 "Site Name: {}".format(Site.objects.get(pk=1).name)
             )
         )
+
+    site.domain = f'{DOMAIN_NAME}'
+    site.name = f'{SITE_NAME}'
+    site.save()
 
     try:
         call_command("migrate")

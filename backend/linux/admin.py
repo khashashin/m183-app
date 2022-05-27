@@ -5,8 +5,7 @@ from linux.models import Command, Option
 class OptionInline(admin.TabularInline):
     model = Option
     extra = 0
-    fields = ('name', 'description')
-    readonly_fields = ('name', 'description')
+    fields = ('option', 'name', 'description')
 
 
 @admin.register(Command)
