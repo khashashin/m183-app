@@ -2,3 +2,5 @@
 .git
 core/settings_local.py
 logs
+.idea
+.sqlite3
